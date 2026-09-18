@@ -3,6 +3,7 @@ import {
   ArrowLeft,
   ArrowLeftRight,
   BookOpen,
+  Check,
   Clock,
   FileText,
   Link,
@@ -33,6 +34,9 @@ interface BibleStudyGroup {
   location?: string;
   zip?: string;
   testament: 'Old Testament' | 'New Testament';
+  is_private?: boolean;
+  invite_code?: string;
+  description?: string;
 }
 
 const MODERATORS = [
@@ -328,7 +332,9 @@ const GroupInterior: React.FC<GroupInteriorProps> = ({
   const modFirstName = getFirstName(group.moderatorName);
 
   const handleInvite = () => {
-    const link = `https://selah.app/circles/${group.id}`;
+    const link = group.invite_code
+      ? `https://selah.app/study/${group.invite_code}`
+      : `https://selah.app/circles/${group.id}`;
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(link).catch(() => undefined);
     }
@@ -606,6 +612,259 @@ const GroupInterior: React.FC<GroupInteriorProps> = ({
   );
 };
 
+interface CreateStudyModalProps {
+  user: UserProfile;
+  onClose: () => void;
+  onCreate: (formData: {
+    name: string;
+    book: string;
+    meetingTime: string;
+    capacity: number;
+    description: string;
+    isPrivate: boolean;
+  }) => BibleStudyGroup;
+}
+
+const CreateStudyModal: React.FC<CreateStudyModalProps> = ({ user, onClose, onCreate }) => {
+  const [name, setName] = useState('');
+  const [book, setBook] = useState(BIBLE_BOOKS[0]);
+  const [meetingTime, setMeetingTime] = useState(MEETING_TIMES[0]);
+  const [capacity, setCapacity] = useState(12);
+  const [description, setDescription] = useState('');
+  const [isPrivate, setIsPrivate] = useState(true);
+  const [createdGroup, setCreatedGroup] = useState<BibleStudyGroup | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  const isVerified = user.verifiedLeader === true;
+
+  const handleSubmit = () => {
+    if (!name.trim()) return;
+    const group = onCreate({
+      name: name.trim(),
+      book,
+      meetingTime,
+      capacity: Math.max(2, Math.min(50, capacity)),
+      description: description.trim(),
+      // Force private if not verified
+      isPrivate: isVerified ? isPrivate : true,
+    });
+    setCreatedGroup(group);
+  };
+
+  const inviteLink = createdGroup?.invite_code
+    ? `https://selah.app/study/${createdGroup.invite_code}`
+    : '';
+
+  const copyLink = () => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(inviteLink).catch(() => undefined);
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
+  };
+
+  // Success state — show invite link for private studies
+  if (createdGroup) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+        <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+        <div className="relative w-full max-w-md bg-white dark:bg-stone-900 rounded-3xl p-7 shadow-2xl text-center">
+          <div className="w-16 h-16 rounded-full bg-primary/10 dark:bg-stone-800 text-primary dark:text-warm-amber flex items-center justify-center mx-auto mb-4">
+            <Check className="w-8 h-8" />
+          </div>
+          <h3 className="font-serif text-2xl font-bold text-gray-900 dark:text-amber-100">
+            Study Created!
+          </h3>
+          <p className="text-sm text-gray-600 dark:text-stone-300 mt-2 leading-relaxed">
+            "{createdGroup.displayName}" is ready{createdGroup.is_private ? ' — share the link below to invite others.' : ' and visible in Browse.'}
+          </p>
+
+          {createdGroup.is_private && (
+            <div className="mt-5 space-y-3">
+              <div className="bg-cream dark:bg-stone-800 rounded-xl p-3 border border-gray-200 dark:border-stone-700">
+                <p className="text-xs text-gray-500 dark:text-stone-400 mb-1 font-semibold uppercase tracking-wide">Invite Link</p>
+                <p className="text-xs text-primary dark:text-warm-amber break-all font-mono">{inviteLink}</p>
+              </div>
+              <button
+                onClick={copyLink}
+                className="w-full bg-primary text-white text-sm font-semibold rounded-xl py-3 hover:bg-primary/90 transition flex items-center justify-center gap-2"
+              >
+                <Link className="w-4 h-4" />
+                {copied ? 'Copied!' : 'Copy Link'}
+              </button>
+              <div className="grid grid-cols-2 gap-3">
+                <a
+                  href={`https://wa.me/?text=${encodeURIComponent(inviteLink + ' — Join my Bible study on Selah!')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-green-600 text-white text-sm font-semibold rounded-xl py-3 hover:bg-green-700 transition flex items-center justify-center gap-2"
+                >
+                  <Send className="w-4 h-4" />
+                  WhatsApp
+                </a>
+                <a
+                  href={`sms:?body=${encodeURIComponent(inviteLink + ' — Join my Bible study on Selah!')}`}
+                  className="w-full bg-blue-600 text-white text-sm font-semibold rounded-xl py-3 hover:bg-blue-700 transition flex items-center justify-center gap-2"
+                >
+                  <Send className="w-4 h-4" />
+                  SMS
+                </a>
+              </div>
+            </div>
+          )}
+
+          <button
+            onClick={onClose}
+            className="mt-6 w-full bg-gray-100 dark:bg-stone-800 text-gray-700 dark:text-stone-200 text-sm font-semibold rounded-xl py-3 hover:bg-gray-200 dark:hover:bg-stone-700 transition"
+          >
+            Done
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Form state
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+      <div className="relative w-full max-w-md bg-white dark:bg-stone-900 rounded-3xl p-6 sm:p-7 shadow-2xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-start justify-between gap-4 mb-4">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-primary/70 dark:text-warm-amber">New Circle</p>
+            <h3 className="font-serif text-2xl font-bold text-gray-900 dark:text-amber-100 mt-1">Create a Bible Study</h3>
+          </div>
+          <button
+            onClick={onClose}
+            aria-label="Close"
+            className="w-9 h-9 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-300 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-stone-700 transition shrink-0"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          {/* Name */}
+          <div>
+            <label className="block text-xs font-bold text-gray-500 dark:text-stone-400 uppercase tracking-wide mb-1.5">Study Name</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="e.g. John: Anchored"
+              className="w-full p-3 text-sm rounded-xl border border-gray-200 dark:border-stone-700 bg-white dark:bg-card-warm text-gray-900 dark:text-stone-100 outline-none focus:ring-2 focus:ring-primary/20 transition"
+            />
+          </div>
+
+          {/* Book */}
+          <div>
+            <label className="block text-xs font-bold text-gray-500 dark:text-stone-400 uppercase tracking-wide mb-1.5">Book / Topic</label>
+            <select
+              value={book}
+              onChange={(e) => setBook(e.target.value)}
+              className="w-full p-3 text-sm rounded-xl border border-gray-200 dark:border-stone-700 bg-white dark:bg-card-warm text-gray-900 dark:text-stone-100 outline-none focus:ring-2 focus:ring-primary/20 transition"
+            >
+              {BIBLE_BOOKS.map((b) => (
+                <option key={b} value={b}>{b}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Meeting Time */}
+          <div>
+            <label className="block text-xs font-bold text-gray-500 dark:text-stone-400 uppercase tracking-wide mb-1.5">Meeting Time</label>
+            <select
+              value={meetingTime}
+              onChange={(e) => setMeetingTime(e.target.value)}
+              className="w-full p-3 text-sm rounded-xl border border-gray-200 dark:border-stone-700 bg-white dark:bg-card-warm text-gray-900 dark:text-stone-100 outline-none focus:ring-2 focus:ring-primary/20 transition"
+            >
+              {MEETING_TIMES.map((t) => (
+                <option key={t} value={t}>{t}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Capacity */}
+          <div>
+            <label className="block text-xs font-bold text-gray-500 dark:text-stone-400 uppercase tracking-wide mb-1.5">Member Capacity</label>
+            <input
+              type="number"
+              value={capacity}
+              onChange={(e) => setCapacity(parseInt(e.target.value) || 12)}
+              min={2}
+              max={50}
+              className="w-full p-3 text-sm rounded-xl border border-gray-200 dark:border-stone-700 bg-white dark:bg-card-warm text-gray-900 dark:text-stone-100 outline-none focus:ring-2 focus:ring-primary/20 transition"
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block text-xs font-bold text-gray-500 dark:text-stone-400 uppercase tracking-wide mb-1.5">Description</label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              maxLength={200}
+              placeholder="What will this study focus on?"
+              className="w-full p-3 text-sm rounded-xl border border-gray-200 dark:border-stone-700 bg-white dark:bg-card-warm text-gray-900 dark:text-stone-100 outline-none focus:ring-2 focus:ring-primary/20 transition h-20 resize-none"
+            />
+          </div>
+
+          {/* Privacy Toggle */}
+          <div>
+            <label className="block text-xs font-bold text-gray-500 dark:text-stone-400 uppercase tracking-wide mb-1.5">Privacy</label>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => isVerified && setIsPrivate(false)}
+                disabled={!isVerified}
+                className={`flex-1 px-4 py-2.5 rounded-xl text-sm font-bold transition ${
+                  !isPrivate && isVerified
+                    ? 'bg-primary text-white shadow-sm'
+                    : isVerified
+                      ? 'bg-gray-100 dark:bg-stone-800 text-gray-500 dark:text-stone-400 border border-gray-200 dark:border-stone-700'
+                      : 'bg-gray-100 dark:bg-stone-800 text-gray-300 dark:text-stone-600 border border-gray-200 dark:border-stone-700 cursor-not-allowed'
+                }`}
+              >
+                Public
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsPrivate(true)}
+                className={`flex-1 px-4 py-2.5 rounded-xl text-sm font-bold transition ${
+                  isPrivate
+                    ? 'bg-primary text-white shadow-sm'
+                    : 'bg-gray-100 dark:bg-stone-800 text-gray-500 dark:text-stone-400 border border-gray-200 dark:border-stone-700'
+                }`}
+              >
+                Private / Link-Only
+              </button>
+            </div>
+            {!isVerified && (
+              <p className="text-[11px] text-gray-400 dark:text-stone-500 mt-1.5 leading-relaxed">
+                Public studies require leader verification. Go to Profile → Leader Verification to get verified.
+              </p>
+            )}
+            {isPrivate && (
+              <p className="text-[11px] text-gray-400 dark:text-stone-500 mt-1.5 leading-relaxed">
+                Only people with your invite link can join this study.
+              </p>
+            )}
+          </div>
+
+          {/* Submit */}
+          <button
+            onClick={handleSubmit}
+            disabled={!name.trim()}
+            className="w-full bg-primary text-white text-sm font-semibold rounded-xl py-3.5 hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition"
+          >
+            Create Study
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
   const [browseOpen, setBrowseOpen] = useState(false);
   const [browseSearch, setBrowseSearch] = useState('');
@@ -615,6 +874,20 @@ export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
     oldTestament: true,
     newTestament: true,
   });
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [createdStudies, setCreatedStudies] = useState<BibleStudyGroup[]>(() => {
+    try {
+      if (!user.email) return [];
+      const key = `user_${user.email.toLowerCase()}_created_studies`;
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const mergedGroups = useMemo(() => [...SEED_GROUPS, ...createdStudies], [createdStudies]);
+
   const [joinedIds, setJoinedIds] = useState<string[]>(() => {
     try {
       if (!user.email) return [];
@@ -623,7 +896,7 @@ export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
       const blob = JSON.parse(raw);
       const stored: string[] = blob.joinedStudyGroups || [];
       return Array.from(new Set(stored))
-        .filter((id) => SEED_GROUPS.some((g) => g.id === id))
+        .filter((id) => mergedGroups.some((g) => g.id === id))
         .slice(0, MAX_GROUPS);
     } catch {
       return [];
@@ -640,7 +913,7 @@ export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
   const activeGroupIds = Array.from(
     new Set([user.bibleStudyGroupId, ...joinedIds].filter(Boolean) as string[])
   ).slice(0, MAX_GROUPS);
-  const activeGroups = SEED_GROUPS.filter((g) => activeGroupIds.includes(g.id));
+  const activeGroups = mergedGroups.filter((g) => activeGroupIds.includes(g.id));
 
   const atGroupLimit = joinedIds.length >= MAX_GROUPS;
 
@@ -658,13 +931,23 @@ export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
   }, [joinedIds, user.email]);
 
   useEffect(() => {
+    if (typeof window === 'undefined' || !user.email) return;
+    try {
+      const key = `user_${user.email.toLowerCase()}_created_studies`;
+      localStorage.setItem(key, JSON.stringify(createdStudies));
+    } catch {
+      /* ignore write errors */
+    }
+  }, [createdStudies, user.email]);
+
+  useEffect(() => {
     setDrawerOpen(false);
     setDrawerTab('overview');
   }, [openedGroupId]);
 
   useEffect(() => {
     if (!openedGroupId) return;
-    const openedGroup = SEED_GROUPS.find((g) => g.id === openedGroupId);
+    const openedGroup = mergedGroups.find((g) => g.id === openedGroupId);
     const isMember = openedGroup && joinedIds.includes(openedGroup.id);
     if (!openedGroup || !isMember) {
       setOpenedGroupId(null);
@@ -673,7 +956,7 @@ export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
   }, [openedGroupId, joinedIds]);
 
   const handleJoin = (id: string) => {
-    const group = SEED_GROUPS.find((g) => g.id === id);
+    const group = mergedGroups.find((g) => g.id === id);
     if (!group) return;
     if (joinedIds.includes(id)) return;
     if (group.activeMemberCount >= group.capacity) return;
@@ -701,6 +984,37 @@ export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
     );
     setSwapCandidateId(null);
     setBrowseOpen(false);
+  };
+
+  const handleCreateStudy = (formData: {
+    name: string;
+    book: string;
+    meetingTime: string;
+    capacity: number;
+    description: string;
+    isPrivate: boolean;
+  }) => {
+    const isOld = OLD_TESTAMENT_BOOKS.includes(formData.book);
+    const inviteCode = 'SEL-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+    const newGroup: BibleStudyGroup = {
+      id: `study-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      displayName: formData.name,
+      book: formData.book,
+      topic: formData.description || `Studying ${formData.book}`,
+      capacity: formData.capacity,
+      activeMemberCount: 1,
+      moderatorName: user.name || 'You',
+      meetingTime: formData.meetingTime,
+      status: 'open',
+      isOnline: true,
+      testament: isOld ? 'Old Testament' : 'New Testament',
+      is_private: formData.isPrivate,
+      invite_code: inviteCode,
+      description: formData.description,
+    };
+    setCreatedStudies((prev) => [...prev, newGroup]);
+    setJoinedIds((prev) => [...prev, newGroup.id]);
+    return newGroup;
   };
 
   const Header = () => (
@@ -841,8 +1155,8 @@ export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
 
   const SwapModal = () => {
     if (!swapCandidateId) return null;
-    const candidate = SEED_GROUPS.find((g) => g.id === swapCandidateId);
-    const currentGroups = SEED_GROUPS.filter((g) => joinedIds.includes(g.id));
+    const candidate = mergedGroups.find((g) => g.id === swapCandidateId);
+    const currentGroups = mergedGroups.filter((g) => joinedIds.includes(g.id));
 
     return (
       <div
@@ -967,7 +1281,7 @@ export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
   const Scenario3 = () => {
     const book = user.bibleBook || '';
     const userLocation = (user.location || '').toLowerCase();
-    const matches = SEED_GROUPS.filter(
+    const matches = mergedGroups.filter(
       (g) => g.book.toLowerCase() === book.toLowerCase()
     );
     const localMatches = matches.filter(
@@ -980,7 +1294,7 @@ export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
       ? localMatches
       : onlineMatches.length > 0
         ? onlineMatches
-        : SEED_GROUPS.filter((g) => g.status !== 'full').slice(0, 3);
+        : mergedGroups.filter((g) => g.status !== 'full').slice(0, 3);
 
     const showFallback = !hasLocalNearUser && matches.length > 0;
     const noBookMatch = matches.length === 0;
@@ -1024,7 +1338,10 @@ export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
 
   const Browse = () => {
     const filteredGroups = useMemo(() => {
-      let result = SEED_GROUPS;
+      let result = mergedGroups;
+
+      // Exclude private studies from public browse
+      result = result.filter(g => !g.is_private);
 
       // Apply toggle filters
       if (!filters.local || !filters.online) {
@@ -1074,9 +1391,18 @@ export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
           <h2 className="font-serif text-2xl font-bold text-gray-900 dark:text-amber-100 mt-1">
             Browse Bible study groups
           </h2>
-          <p className="text-sm text-gray-500 dark:text-stone-300 mt-1 mb-6">
+          <p className="text-sm text-gray-500 dark:text-stone-300 mt-1 mb-4">
             Choose a circle to begin your journey.
           </p>
+
+          {/* Create Study Button */}
+          <button
+            onClick={() => setCreateModalOpen(true)}
+            className="w-full bg-primary text-white text-sm font-bold rounded-xl py-3 mb-4 hover:bg-primary/90 active:scale-[0.98] transition flex items-center justify-center gap-2 shadow-sm"
+          >
+            <Plus className="w-4 h-4" />
+            Create a Study
+          </button>
 
           {/* Search Bar */}
           <div className="relative mb-4">
@@ -1144,7 +1470,7 @@ export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
 
   const renderContent = () => {
     if (openedGroupId) {
-      const openedGroup = SEED_GROUPS.find((g) => g.id === openedGroupId);
+      const openedGroup = mergedGroups.find((g) => g.id === openedGroupId);
       if (!openedGroup || !joinedIds.includes(openedGroup.id)) return null;
       return (
         <GroupInterior
@@ -1178,7 +1504,7 @@ export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
   };
 
   const joinCandidate = confirmJoinId
-    ? SEED_GROUPS.find((g) => g.id === confirmJoinId)
+    ? mergedGroups.find((g) => g.id === confirmJoinId)
     : undefined;
 
   return (
@@ -1186,6 +1512,13 @@ export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
       <Header />
       {renderContent()}
       <SwapModal />
+      {createModalOpen && (
+        <CreateStudyModal
+          user={user}
+          onClose={() => setCreateModalOpen(false)}
+          onCreate={handleCreateStudy}
+        />
+      )}
 
       {confirmJoinId && joinCandidate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">

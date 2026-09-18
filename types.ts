@@ -71,6 +71,7 @@ export interface UserProfile {
   completedLessons: string[]; // IDs of completed lessons
   biblicalInterests?: string[];
   wantsGroupMatch: boolean;
+  verifiedLeader?: boolean;
 }
 
 export interface Message {

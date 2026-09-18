@@ -160,7 +160,7 @@ const EditProfileView: React.FC<SubViewProps> = ({ user, onBack, updateProfile, 
   };
 
   return (
-    <div className="space-y-6 pb-24 animate-fade-in">
+    <div className="space-y-6 pb-6 animate-fade-in">
       <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-stone-300 hover:text-primary dark:hover:text-warm-amber transition mb-4 active:scale-95">
         <span className="w-10 h-10 rounded-full bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 shadow-md flex items-center justify-center text-stone-700 dark:text-stone-200 hover:scale-105 transition-all">
           <ArrowLeft size={18} />
@@ -205,7 +205,7 @@ const LocationEditView: React.FC<SubViewProps> = ({ user, onBack, updateProfile,
   };
 
   return (
-    <div className="space-y-6 pb-24 animate-fade-in">
+    <div className="space-y-6 pb-6 animate-fade-in">
       <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-stone-300 hover:text-primary dark:hover:text-warm-amber transition mb-4 active:scale-95">
         <span className="w-10 h-10 rounded-full bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 shadow-md flex items-center justify-center text-stone-700 dark:text-stone-200 hover:scale-105 transition-all">
           <ArrowLeft size={18} />
@@ -250,7 +250,7 @@ const StrugglesEditView: React.FC<SubViewProps> = ({ user, onBack, updateProfile
   };
 
   return (
-    <div className="space-y-6 pb-24 animate-fade-in">
+    <div className="space-y-6 pb-6 animate-fade-in">
       <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-stone-300 hover:text-primary dark:hover:text-warm-amber transition mb-4 active:scale-95">
         <span className="w-10 h-10 rounded-full bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 shadow-md flex items-center justify-center text-stone-700 dark:text-stone-200 hover:scale-105 transition-all">
           <ArrowLeft size={18} />
@@ -325,7 +325,7 @@ const InterestsEditView: React.FC<SubViewProps> = ({ user, onBack, updateProfile
   };
 
   return (
-    <div className="space-y-6 pb-24 animate-fade-in">
+    <div className="space-y-6 pb-6 animate-fade-in">
       <button onClick={onBack} className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-stone-300 hover:text-primary dark:hover:text-warm-amber transition mb-4 active:scale-95">
         <span className="w-10 h-10 rounded-full bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 shadow-md flex items-center justify-center text-stone-700 dark:text-stone-200 hover:scale-105 transition-all">
           <ArrowLeft size={18} />
@@ -400,6 +400,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, setUser, onLogout })
       return false;
     }
   });
+  const [isVerifying, setIsVerifying] = useState(false);
 
   const [scripture] = useState(getDailyVerse());
   const verseChannelId = getVerseChannelId(scripture.reference);
@@ -681,7 +682,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, setUser, onLogout })
     const userName = user.name || 'Believer';
 
     return (
-      <div className="space-y-6 pb-24 animate-fade-in">
+      <div className="space-y-6 pb-6 animate-fade-in">
         {/* Header: Minimalist Staff Icon + User Greeting */}
         <div className="flex justify-between items-center pt-1">
           <div className="flex items-center gap-2.5">
@@ -847,7 +848,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, setUser, onLogout })
     const currentPosts = channelPosts[selectedChannel] || channelPosts['general-fellowship'];
 
     return (
-      <div className="space-y-4 pb-24 animate-fade-in">
+      <div className="space-y-4 pb-6 animate-fade-in">
         <div className="border-b dark:border-stone-700 pb-3 flex justify-between items-center">
           <div>
             <h2 className="font-serif text-2xl text-primary dark:text-warm-amber font-bold">Discussion Hub</h2>
@@ -1011,7 +1012,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, setUser, onLogout })
   // -- Render Tab 4: Profile --
   const renderProfileMenu = () => {
     return (
-      <div className="space-y-6 pb-24 animate-fade-in">
+      <div className="space-y-6 pb-6 animate-fade-in">
         {/* Header */}
         <div className="flex flex-col items-center pt-2 pb-4">
           <div className="relative mb-3">
@@ -1041,6 +1042,48 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, setUser, onLogout })
             <div><strong>Discussion Focus Areas:</strong> {(user.struggles && user.struggles.length > 0) ? user.struggles.join(', ') : 'General Fellowship'}</div>
             <div><strong>Interests:</strong> {(user.biblicalInterests && user.biblicalInterests.length > 0) ? user.biblicalInterests.join(', ') : 'General Bible Reflection'}</div>
           </div>
+        </div>
+
+        {/* Leader Verification Card */}
+        <div className="bg-white dark:bg-card-warm p-4 rounded-xl border border-gray-100 dark:border-stone-700/80 shadow-xs">
+          {user.verifiedLeader ? (
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-full bg-primary/10 dark:bg-stone-950/60 text-primary dark:text-warm-amber">
+                <ShieldCheck size={22} />
+              </div>
+              <div>
+                <h3 className="font-bold text-sm text-gray-800 dark:text-stone-100">✓ Verified Leader</h3>
+                <p className="text-xs text-gray-500 dark:text-stone-400">You can create public Bible studies</p>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-full bg-primary/5 dark:bg-stone-950/60 text-primary dark:text-warm-amber">
+                  <ShieldCheck size={22} />
+                </div>
+                <div>
+                  <h3 className="font-bold text-sm text-gray-800 dark:text-stone-100">Leader Verification</h3>
+                  <p className="text-xs text-gray-500 dark:text-stone-400">Verified leaders can publish public Bible studies</p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  if (isVerifying) return;
+                  setIsVerifying(true);
+                  setTimeout(() => {
+                    updateProfile('verifiedLeader', true);
+                    persistUserEdits({ verifiedLeader: true });
+                    setIsVerifying(false);
+                  }, 800);
+                }}
+                disabled={isVerifying}
+                className="text-xs font-bold text-white bg-primary rounded-full px-4 py-2 hover:bg-primary/90 disabled:opacity-60 transition shrink-0"
+              >
+                {isVerifying ? 'Verifying...' : 'Request Verification'}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Dark Mode Switch Toggle Row */}
@@ -1173,7 +1216,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, setUser, onLogout })
     );
 
     return (
-      <div className="space-y-6 pb-24 animate-fade-in">
+      <div className="space-y-6 pb-6 animate-fade-in">
       <button onClick={() => setProfileView('menu')} className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-stone-300 hover:text-primary dark:hover:text-warm-amber transition mb-4 active:scale-95">
         <span className="w-10 h-10 rounded-full bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 shadow-md flex items-center justify-center text-stone-700 dark:text-stone-200 hover:scale-105 transition-all">
           <ArrowLeft size={18} />
@@ -1219,7 +1262,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, setUser, onLogout })
   };
 
   const renderNotificationsSettings = () => (
-    <div className="space-y-6 pb-24 animate-fade-in">
+    <div className="space-y-6 pb-6 animate-fade-in">
       <button onClick={() => setProfileView('menu')} className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-stone-300 hover:text-primary dark:hover:text-warm-amber transition mb-4 active:scale-95">
         <span className="w-10 h-10 rounded-full bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 shadow-md flex items-center justify-center text-stone-700 dark:text-stone-200 hover:scale-105 transition-all">
           <ArrowLeft size={18} />
@@ -1283,7 +1326,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, setUser, onLogout })
             {profileView === 'prayers' && renderPrayers()}
             {profileView === 'notifications' && renderNotificationsSettings()}
             {profileView === 'account' && (
-              <div className="space-y-4 pb-24">
+              <div className="space-y-4 pb-6">
                 <button onClick={() => setProfileView('menu')} className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-stone-300 hover:text-primary dark:hover:text-warm-amber transition mb-4 active:scale-95">
                   <span className="w-10 h-10 rounded-full bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 shadow-md flex items-center justify-center text-stone-700 dark:text-stone-200 hover:scale-105 transition-all">
                     <ArrowLeft size={18} />
@@ -1297,7 +1340,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, setUser, onLogout })
               </div>
             )}
             {profileView === 'help' && (
-              <div className="space-y-4 pb-24">
+              <div className="space-y-4 pb-6">
                 <button onClick={() => setProfileView('menu')} className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-stone-300 hover:text-primary dark:hover:text-warm-amber transition mb-4 active:scale-95">
                   <span className="w-10 h-10 rounded-full bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 shadow-md flex items-center justify-center text-stone-700 dark:text-stone-200 hover:scale-105 transition-all">
                     <ArrowLeft size={18} />

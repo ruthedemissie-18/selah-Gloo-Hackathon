@@ -150,7 +150,7 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
       </div>
 
       <p className="font-sans text-gray-600 dark:text-stone-300 max-w-xs mx-auto leading-relaxed text-sm">
-        Connect with a global community of believers walking the same path, reading the Word, and praying together.
+        Find your community, or build your own.
       </p>
 
       <div className="w-full pt-4">
