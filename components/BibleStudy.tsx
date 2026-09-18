@@ -344,7 +344,7 @@ const GroupInterior: React.FC<GroupInteriorProps> = ({
 
   return (
     <main className="relative flex flex-col h-[calc(100vh-5rem)] bg-cream dark:bg-stone-950">
-      <div className="bg-white dark:bg-stone-900 border-b dark:border-stone-700 px-5 py-4 flex items-center gap-3 shrink-0">
+      <div className="bg-white dark:bg-card-warm border-b dark:border-stone-700 px-5 py-4 flex items-center gap-3 shrink-0">
         <button
           onClick={onBack}
           aria-label="Back to dashboard"
@@ -388,7 +388,7 @@ const GroupInterior: React.FC<GroupInteriorProps> = ({
               className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${
                 msg.self
                   ? 'bg-primary text-white rounded-tr-none'
-                  : 'bg-white dark:bg-stone-800 text-gray-800 dark:text-stone-200 rounded-tl-none shadow-sm border dark:border-stone-700'
+                  : 'bg-white dark:bg-card-warm text-gray-800 dark:text-stone-200 rounded-tl-none shadow-sm border dark:border-stone-700'
               }`}
             >
               {!msg.self && (
@@ -402,7 +402,7 @@ const GroupInterior: React.FC<GroupInteriorProps> = ({
         ))}
       </div>
 
-      <div className="bg-white dark:bg-stone-900 border-t dark:border-stone-700 px-5 py-4 shrink-0">
+      <div className="bg-white dark:bg-card-warm border-t dark:border-stone-700 px-5 py-4 shrink-0">
         <div className="flex items-center gap-3 max-w-2xl mx-auto">
           <input
             type="text"
@@ -410,7 +410,7 @@ const GroupInterior: React.FC<GroupInteriorProps> = ({
             onChange={(e) => setDraft(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Share a thought..."
-            className="flex-1 bg-cream dark:bg-stone-800 text-sm text-gray-900 dark:text-amber-100 placeholder-gray-400 dark:placeholder-stone-400 rounded-full px-5 py-3 outline-none focus:ring-2 focus:ring-primary/20 transition"
+            className="flex-1 bg-cream dark:bg-card-warm text-sm text-gray-900 dark:text-amber-100 placeholder-gray-400 dark:placeholder-stone-400 rounded-full px-5 py-3 outline-none focus:ring-2 focus:ring-primary/20 transition"
           />
           <button
             onClick={sendMessage}
@@ -430,7 +430,7 @@ const GroupInterior: React.FC<GroupInteriorProps> = ({
             aria-label="Close drawer"
             onClick={() => setDrawerOpen(false)}
           />
-          <div className="bg-white dark:bg-stone-900 rounded-t-3xl shadow-2xl p-6 max-h-[80%] overflow-y-auto">
+          <div className="bg-white dark:bg-card-warm rounded-t-3xl shadow-2xl p-6 max-h-[80%] overflow-y-auto">
             <div className="w-12 h-1.5 rounded-full bg-gray-200 dark:bg-stone-700 mx-auto mb-5" />
             <div className="flex items-center justify-between mb-4">
               <button
@@ -459,7 +459,7 @@ const GroupInterior: React.FC<GroupInteriorProps> = ({
 
             {drawerTab === 'overview' ? (
               <div className="space-y-5">
-                <div className="bg-primary/5 dark:bg-stone-800 rounded-2xl p-5">
+                <div className="bg-primary/5 dark:bg-card-warm rounded-2xl p-5">
                   <p className="text-[10px] font-bold uppercase tracking-wider text-primary/70 dark:text-warm-amber">
                     Current Chapter
                   </p>
@@ -468,7 +468,7 @@ const GroupInterior: React.FC<GroupInteriorProps> = ({
                   </p>
                 </div>
 
-                <div className="flex items-start gap-4 bg-white dark:bg-stone-800 rounded-2xl p-5 border dark:border-stone-700 shadow-sm">
+                <div className="flex items-start gap-4 bg-white dark:bg-card-warm rounded-2xl p-5 border dark:border-stone-700 shadow-sm">
                   <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold shrink-0">
                     {getInitials(group.moderatorName)}
                   </div>
@@ -486,7 +486,7 @@ const GroupInterior: React.FC<GroupInteriorProps> = ({
                   </div>
                 </div>
 
-                <div className="bg-primary/5 dark:bg-stone-800 rounded-2xl p-5">
+                <div className="bg-primary/5 dark:bg-card-warm rounded-2xl p-5">
                   <p className="text-sm font-semibold text-primary dark:text-warm-amber">
                     This week's focus: {group.topic}
                   </p>
@@ -504,7 +504,7 @@ const GroupInterior: React.FC<GroupInteriorProps> = ({
               </div>
             ) : (
               <div className="space-y-5">
-                <div className="bg-white dark:bg-stone-800 rounded-2xl p-5 border dark:border-stone-700 shadow-sm">
+                <div className="bg-white dark:bg-card-warm rounded-2xl p-5 border dark:border-stone-700 shadow-sm">
                   <p className="text-[10px] font-bold uppercase tracking-wider text-primary/70 dark:text-warm-amber mb-3">
                     Group Details
                   </p>
@@ -536,7 +536,7 @@ const GroupInterior: React.FC<GroupInteriorProps> = ({
                   Join Zoom Session
                 </a>
 
-                <div className="bg-white dark:bg-stone-800 rounded-2xl border dark:border-stone-700 shadow-sm overflow-hidden">
+                <div className="bg-white dark:bg-card-warm rounded-2xl border dark:border-stone-700 shadow-sm overflow-hidden">
                   {[
                     { label: 'Study guide (PDF)', icon: FileText },
                     { label: 'Reading plan', icon: Link },
@@ -581,7 +581,7 @@ const GroupInterior: React.FC<GroupInteriorProps> = ({
             className="absolute inset-0 bg-black/40"
             onClick={() => setConfirmLeaveId(null)}
           />
-          <div className="relative w-full max-w-sm bg-white dark:bg-stone-900 rounded-3xl p-7 shadow-2xl text-center">
+          <div className="relative w-full max-w-sm bg-white dark:bg-card-warm rounded-3xl p-7 shadow-2xl text-center">
             <p className="text-[10px] font-bold uppercase tracking-wider text-primary/70 dark:text-warm-amber mb-2">
               Leaving circle
             </p>
@@ -668,7 +668,7 @@ const CreateStudyModal: React.FC<CreateStudyModalProps> = ({ user, onClose, onCr
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
         <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-        <div className="relative w-full max-w-md bg-white dark:bg-stone-900 rounded-3xl p-7 shadow-2xl text-center">
+        <div className="relative w-full max-w-md bg-white dark:bg-card-warm rounded-3xl p-7 shadow-2xl text-center">
           <div className="w-16 h-16 rounded-full bg-primary/10 dark:bg-stone-800 text-primary dark:text-warm-amber flex items-center justify-center mx-auto mb-4">
             <Check className="w-8 h-8" />
           </div>
@@ -681,7 +681,7 @@ const CreateStudyModal: React.FC<CreateStudyModalProps> = ({ user, onClose, onCr
 
           {createdGroup.is_private && (
             <div className="mt-5 space-y-3">
-              <div className="bg-cream dark:bg-stone-800 rounded-xl p-3 border border-gray-200 dark:border-stone-700">
+              <div className="bg-cream dark:bg-card-warm rounded-xl p-3 border border-gray-200 dark:border-stone-700">
                 <p className="text-xs text-gray-500 dark:text-stone-400 mb-1 font-semibold uppercase tracking-wide">Invite Link</p>
                 <p className="text-xs text-primary dark:text-warm-amber break-all font-mono">{inviteLink}</p>
               </div>
@@ -715,7 +715,7 @@ const CreateStudyModal: React.FC<CreateStudyModalProps> = ({ user, onClose, onCr
 
           <button
             onClick={onClose}
-            className="mt-6 w-full bg-gray-100 dark:bg-stone-800 text-gray-700 dark:text-stone-200 text-sm font-semibold rounded-xl py-3 hover:bg-gray-200 dark:hover:bg-stone-700 transition"
+            className="mt-6 w-full bg-gray-100 dark:bg-card-warm text-gray-700 dark:text-stone-200 text-sm font-semibold rounded-xl py-3 hover:bg-gray-200 dark:hover:bg-stone-700 transition"
           >
             Done
           </button>
@@ -728,7 +728,7 @@ const CreateStudyModal: React.FC<CreateStudyModalProps> = ({ user, onClose, onCr
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-      <div className="relative w-full max-w-md bg-white dark:bg-stone-900 rounded-3xl p-6 sm:p-7 shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div className="relative w-full max-w-md bg-white dark:bg-card-warm rounded-3xl p-6 sm:p-7 shadow-2xl max-h-[90vh] overflow-y-auto">
         <div className="flex items-start justify-between gap-4 mb-4">
           <div>
             <p className="text-[10px] font-bold uppercase tracking-wider text-primary/70 dark:text-warm-amber">New Circle</p>
@@ -737,7 +737,7 @@ const CreateStudyModal: React.FC<CreateStudyModalProps> = ({ user, onClose, onCr
           <button
             onClick={onClose}
             aria-label="Close"
-            className="w-9 h-9 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-300 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-stone-700 transition shrink-0"
+            className="w-9 h-9 rounded-full bg-stone-100 dark:bg-card-warm text-stone-500 dark:text-stone-300 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-stone-700 transition shrink-0"
           >
             <X className="w-4 h-4" />
           </button>
@@ -1018,7 +1018,7 @@ export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
   };
 
   const Header = () => (
-    <header className="bg-white dark:bg-stone-900 border-b dark:border-stone-700 px-6 py-5 sticky top-0 z-30">
+    <header className="bg-white dark:bg-card-warm border-b dark:border-stone-700 px-6 py-5 sticky top-0 z-30">
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 rounded-full bg-primary/10 dark:bg-stone-800 text-primary dark:text-warm-amber flex items-center justify-center">
@@ -1046,7 +1046,7 @@ export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
   );
 
   const ActiveGroupCard = ({ group }: { group: BibleStudyGroup }) => (
-    <div className="bg-white dark:bg-stone-900 rounded-3xl p-6 shadow-sm border dark:border-stone-700 relative overflow-hidden">
+    <div className="bg-white dark:bg-card-warm rounded-3xl p-6 shadow-sm border dark:border-stone-700 relative overflow-hidden">
       <div className="absolute top-0 right-0 left-0 h-1.5 bg-gradient-to-r from-primary/30 via-primary/60 to-primary/30" />
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 min-w-0">
@@ -1169,7 +1169,7 @@ export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
           className="absolute inset-0 bg-black/40"
           onClick={() => setSwapCandidateId(null)}
         />
-        <div className="relative w-full max-w-md bg-white dark:bg-stone-900 rounded-3xl p-7 sm:p-8 shadow-2xl">
+        <div className="relative w-full max-w-md bg-white dark:bg-card-warm rounded-3xl p-7 sm:p-8 shadow-2xl">
           <div className="flex items-start justify-between gap-4 mb-2">
             <div>
               <p className="text-[10px] font-bold uppercase tracking-wider text-primary/70 dark:text-warm-amber">
@@ -1526,7 +1526,7 @@ export const BibleStudy: React.FC<BibleStudyProps> = ({ user }) => {
             className="absolute inset-0 bg-black/40"
             onClick={() => setConfirmJoinId(null)}
           />
-          <div className="relative w-full max-w-sm bg-white dark:bg-stone-900 rounded-3xl p-7 shadow-2xl text-center">
+          <div className="relative w-full max-w-sm bg-white dark:bg-card-warm rounded-3xl p-7 shadow-2xl text-center">
             <p className="text-[10px] font-bold uppercase tracking-wider text-primary/70 dark:text-warm-amber mb-2">
               Join circle
             </p>

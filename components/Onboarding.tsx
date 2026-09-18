@@ -327,19 +327,19 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
     <div className="space-y-6 animate-fade-in">
       {renderBackButton()}
       <div>
-        <h2 className="font-serif text-2xl text-primary font-bold">Where are you joining us from?</h2>
-        <p className="text-xs text-gray-500 mt-1">This helps us connect you with local prayer groups and events.</p>
+        <h2 className="font-serif text-2xl text-primary dark:text-warm-amber font-bold">Where are you joining us from?</h2>
+        <p className="text-xs text-gray-500 dark:text-stone-400 mt-1">This helps us connect you with local prayer groups and events.</p>
       </div>
 
       <div className="space-y-4">
         <div>
-          <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">City / Country</label>
+          <label className="block text-xs font-bold text-gray-500 dark:text-stone-400 uppercase tracking-wide mb-1">City / Country</label>
           <input
             type="text"
             value={data.location || ''}
             onChange={(e) => updateData('location', e.target.value)}
             placeholder="e.g., London, UK"
-            className="w-full p-4 rounded-xl border border-gray-200 focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-white text-sm"
+            className="w-full p-4 rounded-xl border border-gray-200 dark:border-stone-700 focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-white dark:bg-stone-900 text-sm dark:text-stone-100"
           />
         </div>
       </div>
@@ -362,19 +362,19 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
         {renderBackButton()}
         <div className="flex justify-between items-start">
           <div>
-            <h2 className="font-serif text-2xl text-primary font-bold">Discussion Focus Areas</h2>
-            <p className="text-gray-600 text-xs mt-1">What areas are you looking for prayer or peer discussions on?</p>
+            <h2 className="font-serif text-2xl text-primary dark:text-warm-amber font-bold">Discussion Focus Areas</h2>
+            <p className="text-gray-600 dark:text-stone-300 text-xs mt-1">What areas are you looking for prayer or peer discussions on?</p>
           </div>
           <button
             onClick={() => onComplete(data)}
-            className="text-xs font-bold text-gray-500 hover:text-primary underline px-2 py-1"
+            className="text-xs font-bold text-gray-500 dark:text-stone-400 hover:text-primary underline px-2 py-1"
           >
             Skip
           </button>
         </div>
 
         {/* Group Matching Opt-in Toggle */}
-        <label className="flex items-start gap-3 p-3.5 rounded-xl bg-white border border-gray-100 cursor-pointer text-xs text-gray-700 hover:bg-cream/40 transition-colors">
+        <label className="flex items-start gap-3 p-3.5 rounded-xl bg-white dark:bg-card-warm border border-gray-100 dark:border-stone-700/80 cursor-pointer text-xs text-gray-700 dark:text-stone-200 hover:bg-cream/40 transition-colors">
           <input
             type="checkbox"
             checked={data.wantsGroupMatch}
@@ -382,17 +382,17 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
             className="w-4 h-4 mt-0.5 text-primary rounded border-gray-300 focus:ring-primary accent-primary"
           />
           <div>
-            <span className="font-semibold block text-gray-800">Yes, find me a group based on my focus areas</span>
-            <span className="text-[11px] text-gray-500 leading-relaxed block mt-0.5">If unchecked, you can still select focus areas, but we won't automatically match you into a discussion group.</span>
+            <span className="font-semibold block text-gray-800 dark:text-stone-100">Yes, find me a group based on my focus areas</span>
+            <span className="text-[11px] text-gray-500 dark:text-stone-400 leading-relaxed block mt-0.5">If unchecked, you can still select focus areas, but we won't automatically match you into a discussion group.</span>
           </div>
         </label>
 
         {/* Brief encouraging note */}
-        <div className="bg-taupe/20 border border-taupe/40 rounded-xl p-3.5 text-xs text-gray-700 leading-relaxed">
+        <div className="bg-taupe/20 border border-taupe/40 rounded-xl p-3.5 text-xs text-gray-700 dark:text-stone-200 leading-relaxed">
           Skipping is completely fine, but sharing helps us tailor your home stats and community boards to what you need most!
         </div>
 
-        <div className="space-y-2 max-h-[35vh] overflow-y-auto pr-1 border-b pb-3 border-gray-100 scrollbar-none">
+        <div className="space-y-2 max-h-[35vh] overflow-y-auto pr-1 border-b pb-3 border-gray-100 dark:border-stone-700 scrollbar-none">
           {STRUGGLES.map((s) => {
             const isSelected = data.struggles.includes(s);
             return (
@@ -400,7 +400,7 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
                 key={s}
                 onClick={() => toggleStruggle(s)}
                 className={`w-full text-left p-3.5 rounded-xl transition-all border flex justify-between items-center ${
-                  isSelected ? 'bg-primary text-white border-primary shadow-md' : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
+                  isSelected ? 'bg-primary text-white border-primary dark:border-warm-amber shadow-md' : 'bg-white dark:bg-card-warm border-gray-200 dark:border-stone-700 text-gray-700 dark:text-stone-200 hover:border-gray-300'
                 }`}
               >
                 <span className="text-sm font-medium">{s}</span>
@@ -412,8 +412,8 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
 
         {/* Smart "Other" Struggle Logic with Exact Custom Placeholder */}
         {isOtherSelected && (
-          <div className="space-y-2 p-3.5 bg-white rounded-xl border border-accent/40 shadow-xs animate-fade-in">
-            <label className="block text-xs font-bold text-primary uppercase tracking-wide">
+          <div className="space-y-2 p-3.5 bg-white dark:bg-card-warm rounded-xl border border-accent/40 shadow-xs animate-fade-in">
+            <label className="block text-xs font-bold text-primary dark:text-warm-amber uppercase tracking-wide">
               Describe what you are navigating:
             </label>
             <textarea
@@ -421,7 +421,7 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
               value={data.specificStruggle}
               onChange={(e) => updateData('specificStruggle', e.target.value)}
               placeholder="Feel free to share what you are navigating so we can best route you to the correct community space."
-              className="w-full p-3 text-xs bg-cream/50 rounded-lg border border-gray-200 focus:border-primary outline-none resize-none text-gray-800"
+              className="w-full p-3 text-xs bg-cream/50 dark:bg-stone-900/50 rounded-lg border border-gray-200 dark:border-stone-700 focus:border-primary outline-none resize-none text-gray-800 dark:text-stone-100"
             />
           </div>
         )}
@@ -440,12 +440,12 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
       <div className="space-y-5 animate-fade-in">
         {renderBackButton()}
         <div className="flex flex-col items-start">
-          <h2 className="font-serif text-2xl text-primary font-bold">Bible Study Matching</h2>
-          <p className="text-gray-600 text-xs mt-1">Select what you are currently reading or studying.</p>
+          <h2 className="font-serif text-2xl text-primary dark:text-warm-amber font-bold">Bible Study Matching</h2>
+          <p className="text-gray-600 dark:text-stone-300 text-xs mt-1">Select what you are currently reading or studying.</p>
         </div>
 
         {/* Info Banner */}
-        <div className="bg-taupe/20 border border-taupe/40 rounded-xl p-4 text-xs text-gray-800 flex items-start gap-3">
+        <div className="bg-taupe/20 border border-taupe/40 rounded-xl p-4 text-xs text-gray-800 dark:text-stone-100 flex items-start gap-3">
           <Info size={18} className="text-primary shrink-0 mt-0.5" />
           <p className="leading-relaxed">
             <strong className="text-primary font-semibold">Why we ask this:</strong> We ask this so we can seamlessly pair you with an intimate, peer-led Bible study group covering that specific book!
@@ -453,11 +453,11 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
         </div>
 
         <div className="space-y-3">
-          <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide">What book are you studying?</label>
+          <label className="block text-xs font-bold text-gray-500 dark:text-stone-400 uppercase tracking-wide">What book are you studying?</label>
           <select
             value={data.bibleBook || ''}
             onChange={(e) => updateData('bibleBook', e.target.value)}
-            className="w-full p-4 rounded-xl bg-white border border-gray-200 focus:border-primary outline-none appearance-none shadow-sm text-sm font-medium text-gray-800"
+            className="w-full p-4 rounded-xl bg-white dark:bg-stone-900 border border-gray-200 dark:border-stone-700 focus:border-primary outline-none appearance-none shadow-sm text-sm font-medium text-gray-800 dark:text-stone-100"
           >
             <option value="" disabled>Select a Book</option>
             <option value="General Discussion">Just browsing / General Fellowship</option>
@@ -491,8 +491,8 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
       <div className="space-y-5 animate-fade-in">
         {renderBackButton()}
         <div className="flex flex-col items-start">
-          <h2 className="font-serif text-2xl text-primary font-bold">Biblical Interests</h2>
-          <p className="text-gray-600 text-xs mt-1">What are your current biblical interests?</p>
+          <h2 className="font-serif text-2xl text-primary dark:text-warm-amber font-bold">Biblical Interests</h2>
+          <p className="text-gray-600 dark:text-stone-300 text-xs mt-1">What are your current biblical interests?</p>
         </div>
 
         {/* Tag Grid */}
@@ -505,8 +505,8 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
                 onClick={() => toggleInterest(interest)}
                 className={`p-3.5 rounded-xl border text-xs font-semibold transition-all flex flex-col justify-between items-start gap-2 text-left h-22 ${
                   isSelected
-                    ? 'bg-primary text-white border-primary shadow-md'
-                    : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300'
+                    ? 'bg-primary text-white border-primary dark:border-warm-amber shadow-md'
+                    : 'bg-white dark:bg-card-warm border-gray-200 dark:border-stone-700 text-gray-700 dark:text-stone-200 hover:border-gray-300'
                 }`}
               >
                 <div className="w-full flex justify-between items-center">
@@ -521,14 +521,14 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
 
         {/* Custom Interest Entry Field if Other is selected */}
         {isOtherSelected && (
-          <div className="space-y-2 p-3 bg-white rounded-xl border border-gray-200 shadow-xs animate-fade-in">
-            <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide">Specify custom interest:</label>
+          <div className="space-y-2 p-3 bg-white dark:bg-card-warm rounded-xl border border-gray-200 dark:border-stone-700 shadow-xs animate-fade-in">
+            <label className="block text-xs font-bold text-gray-600 dark:text-stone-300 uppercase tracking-wide">Specify custom interest:</label>
             <input
               type="text"
               value={customInterestText}
               onChange={(e) => handleCustomInterestChange(e.target.value)}
               placeholder="e.g. Worship Music, Church History, Prophecy"
-              className="w-full p-3 text-xs bg-cream/40 rounded-lg border border-gray-200 focus:border-primary outline-none text-gray-800"
+              className="w-full p-3 text-xs bg-cream/40 dark:bg-stone-900/40 rounded-lg border border-gray-200 dark:border-stone-700 focus:border-primary outline-none text-gray-800 dark:text-stone-100"
             />
           </div>
         )}

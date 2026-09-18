@@ -715,7 +715,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, setUser, onLogout })
 
         {/* Scripture of the Day */}
         <div className="bg-primary dark:bg-stone-800 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden border border-primary/20 dark:border-stone-700/50">
-          <div className="absolute top-0 right-0 -mt-4 -mr-4 w-28 h-28 bg-white opacity-10 rounded-full blur-xl"></div>
+          <div className="absolute top-0 right-0 -mt-4 -mr-4 w-28 h-28 bg-white dark:bg-stone-800 opacity-10 rounded-full blur-xl"></div>
           <h3 className="text-xs uppercase tracking-widest text-white/70 dark:text-warm-amber/70 mb-2 font-semibold">Scripture of the Day</h3>
           {scripture ? (
             <>
@@ -801,7 +801,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, setUser, onLogout })
               <div className="bg-cream/40 dark:bg-stone-900/60 p-4 rounded-xl border border-gray-200 dark:border-stone-700 space-y-3 animate-fade-in">
                 <div className="flex justify-between items-center">
                   <span className="text-xs font-bold text-gray-800 dark:text-stone-200">Submit a Prayer Request</span>
-                  <button onClick={() => setShowSubmitPrayer(false)} className="text-gray-400 hover:text-gray-600 dark:hover:text-stone-300">
+                  <button onClick={() => setShowSubmitPrayer(false)} className="text-gray-400 dark:text-stone-500 hover:text-gray-600 dark:hover:text-stone-300">
                     <X size={16} />
                   </button>
                 </div>
@@ -821,7 +821,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, setUser, onLogout })
                       type="checkbox"
                       checked={postAnonymously}
                       onChange={(e) => setPostAnonymously(e.target.checked)}
-                      className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary accent-primary"
+                      className="w-4 h-4 text-primary rounded border-gray-300 dark:border-stone-600 focus:ring-primary accent-primary"
                     />
                     <span className="font-medium">Post Anonymously</span>
                   </label>
@@ -861,7 +861,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, setUser, onLogout })
 
         {/* Search Bar */}
         <div className="relative">
-          <Search className="absolute left-3 top-2.5 text-gray-400" size={16} />
+          <Search className="absolute left-3 top-2.5 text-gray-400 dark:text-stone-500" size={16} />
           <input
             type="text"
             value={searchQuery}
