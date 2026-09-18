@@ -720,7 +720,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, setUser, onLogout })
             <>
               <p className="font-serif text-base md:text-lg leading-relaxed italic mb-4">"{scripture.verseText}"</p>
               <div className="flex items-center justify-between flex-wrap gap-2">
-                <span className="text-xs font-bold text-accent dark:text-amber-300">{scripture.reference}</span>
+                <span className="text-xs font-bold text-white/80 dark:text-white/80">{scripture.reference}</span>
                 <button
                   onClick={() => {
                     setSelectedChannel(verseChannelId);
@@ -940,11 +940,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, setUser, onLogout })
         {selectedChannel === verseChannelId && (
           <div className="bg-primary dark:bg-stone-800 rounded-2xl p-5 text-white shadow-md border border-primary/20 dark:border-stone-700/50">
             <div className="flex items-center gap-2 mb-2">
-              <BookOpen size={16} className="text-accent dark:text-amber-300" />
+              <BookOpen size={16} className="text-white/80 dark:text-white/80" />
               <span className="text-[10px] uppercase tracking-widest text-white/70 dark:text-warm-amber/70 font-semibold">Today's Verse</span>
             </div>
             <p className="font-serif text-sm md:text-base leading-relaxed italic mb-2">"{scripture.verseText}"</p>
-            <span className="text-xs font-bold text-accent dark:text-amber-300">{scripture.reference}</span>
+            <span className="text-xs font-bold text-white/80 dark:text-white/80">{scripture.reference}</span>
           </div>
         )}
 
